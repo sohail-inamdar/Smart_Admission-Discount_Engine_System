@@ -1,0 +1,70 @@
+# Smart Admission & Discount Engine System
+
+## Overview
+This is a modular Admission Management System implemented in C.
+The system allows student registration, course & batch creation, and dynamic discount application.
+
+## Architecture
+The project follows modular design:
+
+- student.c       -> Student management
+- course.c        -> Course management
+- batch.c         -> Batch management
+- discount.c      -> Flexible discount engine
+- registration.c  -> Registration & payment calculation
+- main.c          -> Menu-driven UI
+
+Business logic is separated into different modules.
+
+## Discount Strategy
+
+The system supports:
+
+- Flat discount
+- Percentage discount
+
+Discount logic is NOT hardcoded.
+Admin can dynamically create new discounts.
+
+Only ONE discount is allowed per registration.
+
+The discount engine calculates final payable amount using:
+
+finalAmount = applyDiscount(fee, discount);
+
+This design is extendable for:
+- Early Bird Discount
+- Loyalty Discount
+- Individual Discount
+- Group Discount
+
+## Assumptions
+
+- Data stored in memory (no database)
+- Email uniqueness not strictly validated
+- Date validation not implemented (can be extended)
+
+## How to Run
+
+Compile:
+
+gcc main.c student.c course.c batch.c discount.c registration.c -o app
+
+Run:
+
+./app
+
+## Mandatory Features Implemented
+
+- Student registration
+- Course & batch creation
+- Flexible discount engine
+- Unique Registration ID
+- One discount per registration
+
+## Optional Improvements
+
+- Date-based discount validation
+- Group discount logic
+- File storage
+- Admin dashboard
