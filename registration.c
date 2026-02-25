@@ -75,15 +75,28 @@ void registerStudent() {
 
     //printf("\nEligible Discounts:\n");
 
-    for(int i=0;i<discountCount;i++) {
-        if(isEligible(discounts[i], studentId, batchId)) {
+   int found = 0;
+
+for(int i = 0; i < discountCount; i++) {
+
+    if(isEligible(discounts[i], studentId, batchId)) {
+
+        if(found == 0) {
             printf("\nEligible Discounts:\n");
-            printf("Discount ID=%d - Discount Name=%s - Discount ID=%d\n",
-                   discounts[i].discountId,
-                   discounts[i].discountName,
-                   discounts[i].applicableBatchId);
         }
+
+        printf("Discount ID=%d | Name=%s | Batch=%d\n",
+               discounts[i].discountId,
+               discounts[i].discountName,
+               discounts[i].applicableBatchId);
+
+        found = 1;
     }
+}
+
+if(found == 0) {
+    printf("\nNo Eligible Discounts for this batch.\n");
+}
     
     printf("Select Discount ID (0 for none): ");
     scanf("%d", &discountId);

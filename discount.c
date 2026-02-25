@@ -174,6 +174,10 @@ void viewDiscounts() {
 
 int isEligible(Discount d, int studentId, int batchId) {
 
+    // printf("Checking Discount %d | DiscountBatch=%d | SelectedBatch=%d\n",
+    //    d.discountId,
+    //    d.applicableBatchId,
+    //    batchId);
 
      // First check if discount is applicable to selected batch
     if(d.applicableBatchId != batchId)
