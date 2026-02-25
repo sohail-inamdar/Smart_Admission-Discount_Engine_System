@@ -178,7 +178,7 @@ int isEligible(Discount d, int studentId, int batchId) {
      // First check if discount is applicable to selected batch
     if(d.applicableBatchId != batchId)
         return 0;
-    viewDiscounts();
+    // viewDiscounts();
 
     // REAL SYSTEM DATE
     time_t t = time(NULL);

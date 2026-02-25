@@ -13,6 +13,8 @@ typedef struct {
 extern Registration registrations[200];
 extern int registrationCount;
 
+void showAllStudentDetails();
+
 void saveRegistrations();
 void loadRegistrations();
 

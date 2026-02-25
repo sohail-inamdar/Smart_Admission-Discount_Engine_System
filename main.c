@@ -21,7 +21,8 @@ void adminMenu() {
         printf("5. Add Discount\n");
         printf("6. View Discounts (Batch-wise)\n");
         printf("7. View Reports\n");
-        printf("8. Back\n");
+        printf("8. View All Student Details\n");
+        printf("9. Back\n");
 
         scanf("%d", &choice);
 
@@ -34,7 +35,8 @@ void adminMenu() {
             case 5: addDiscount(); break;
             case 6: viewDiscountsBatchWise(); break;
             case 7: showReports(); break;
-            case 8: return;
+            case 8: showAllStudentDetails(); break;
+            case 9: return;
 
             default: printf("Invalid Choice\n");
         }

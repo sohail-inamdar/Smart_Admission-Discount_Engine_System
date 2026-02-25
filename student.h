@@ -14,4 +14,7 @@ void viewStudents();
 void saveStudents();
 void loadStudents();
 
+extern Student students[100];
+extern int studentCount;
+
 #endif

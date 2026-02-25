@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <string.h>
+#include "student.h"
 #include "registration.h"
 #include "batch.h"
 #include "course.h"
 #include "discount.h"
+
 
 Registration registrations[200];
 int registrationCount = 0;
@@ -42,6 +45,21 @@ void registerStudent() {
     printf("Enter Student ID: ");
     scanf("%d", &studentId);
 
+
+    int validStudent = 0;
+
+    for(int i = 0; i < studentCount; i++) {
+        if(students[i].id == studentId) {
+            validStudent = 1;
+            break;
+        }
+    }
+
+    if(!validStudent) {
+        printf("Invalid Student ID! Please add student first.\n");
+        return;
+    }
+
     printf("\nAvailable Batches:\n");
     viewBatches();
 
@@ -55,11 +73,12 @@ void registerStudent() {
 
     finalAmount = fee;
 
-    printf("\nEligible Discounts:\n");
+    //printf("\nEligible Discounts:\n");
 
     for(int i=0;i<discountCount;i++) {
         if(isEligible(discounts[i], studentId, batchId)) {
-            printf("%d - %s\n",
+            printf("\nEligible Discounts:\n");
+            printf("Discount ID=%d - Discount Name=%s - Discount ID=%d\n",
                    discounts[i].discountId,
                    discounts[i].discountName,
                    discounts[i].applicableBatchId);
@@ -125,5 +144,67 @@ void showReports() {
         printf("%s : %.2f\n",
                discounts[i].discountName,
                discountRevenue[i]);
+    }
+}
+
+void showAllStudentDetails() {
+
+    if(registrationCount == 0) {
+        printf("\nNo registrations available.\n");
+        return;
+    }
+
+    printf("\n===== STUDENT REGISTRATION DETAILS =====\n");
+
+    for(int i = 0; i < registrationCount; i++) {
+
+        Registration r = registrations[i];
+
+        // 1️⃣ Find Student
+        Student s;
+        for(int j = 0; j < studentCount; j++) {
+            if(students[j].id == r.studentId) {
+                s = students[j];
+                break;
+            }
+        }
+
+        // 2️⃣ Find Batch
+        Batch b;
+        for(int j = 0; j < batchCount; j++) {
+            if(batches[j].batchId == r.batchId) {
+                b = batches[j];
+                break;
+            }
+        }
+
+        // 3️⃣ Find Course
+        Course c;
+        for(int j = 0; j < courseCount; j++) {
+            if(courses[j].courseId == b.courseId) {
+                c = courses[j];
+                break;
+            }
+        }
+
+        // 4️⃣ Find Discount
+        char discountName[50] = "No Discount";
+
+        for(int j = 0; j < discountCount; j++) {
+            if(discounts[j].discountId == r.appliedDiscountId) {
+                strcpy(discountName, discounts[j].discountName);
+                break;
+            }
+        }
+
+        printf("\n---------------------------------\n");
+        printf("Student ID: %d\n", s.id);
+        printf("Name      : %s\n", s.name);
+        printf("Email     : %s\n", s.email);
+        printf("Mobile    : %s\n", s.phone);
+        printf("Course    : %s\n", c.courseName);
+        printf("Batch ID  : %d\n", b.batchId);
+        printf("Final Fee : %.2f\n", r.finalAmount);
+        printf("Discount  : %s\n", discountName);
     }
 }
