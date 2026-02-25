@@ -41,7 +41,7 @@ void registerStudent() {
                    discounts[i].discountName);
         }
     }
-
+    
     printf("Select Discount ID (0 for none): ");
     scanf("%d", &discountId);
 

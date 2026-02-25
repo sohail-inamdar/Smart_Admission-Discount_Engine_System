@@ -29,6 +29,12 @@ void addDiscount() {
 
     printf("\n===== Add New Discount =====\n");
 
+    printf("\nAvailable Batches:\n");
+    viewBatches();
+
+    printf("Enter Batch ID for which this discount is applicable: ");
+    scanf("%d", &d.applicableBatchId);
+
     printf("Enter Discount Name: ");
     scanf(" %[^\n]", d.discountName);
 
@@ -87,10 +93,11 @@ void viewDiscounts() {
 
     for(int i=0;i<discountCount;i++) {
 
-        printf("%d - %s | %s | ",
-               discounts[i].discountId,
-               discounts[i].discountName,
-               getCategoryName(discounts[i].discountCategory));
+        printf("%d - %s | Batch ID: %d | %s\n",
+       discounts[i].discountId,
+       discounts[i].discountName,
+       discounts[i].applicableBatchId,
+       getCategoryName(discounts[i].discountCategory));
 
         if(discounts[i].discountType == 1)
             printf("Flat %.2f\n", discounts[i].discountValue);
@@ -110,6 +117,11 @@ int isEligible(Discount d, int studentId, int batchId) {
             tm.tm_year + 1900,
             tm.tm_mon + 1,
             tm.tm_mday);
+
+    // First check if discount is applicable to selected batch
+    if(d.applicableBatchId != batchId)
+        return 0;
+    viewDiscounts();
 
     // Early Bird
     if(d.discountCategory == 1) {

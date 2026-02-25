@@ -9,6 +9,8 @@ typedef struct {
     int discountType;     // 1=Flat, 2=Percentage
     float discountValue;
 
+    int applicableBatchId;
+
     int discountCategory; // 1=EarlyBird
                           // 2=Loyalty
                           // 3=Individual
