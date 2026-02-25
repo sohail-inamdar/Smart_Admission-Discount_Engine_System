@@ -8,24 +8,34 @@
 #include "registration.h"
 
 void adminMenu() {
+
     int choice;
 
     while(1) {
+
         printf("\n===== ADMIN MENU =====\n");
         printf("1. Add Course\n");
-        printf("2. Add Batch\n");
-        printf("3. Add Discount\n");
-        printf("4. View Reports\n");
-        printf("5. Back\n");
+        printf("2. View Courses\n");
+        printf("3. Add Batch\n");
+        printf("4. View Batches\n");
+        printf("5. Add Discount\n");
+        printf("6. View Discounts (Batch-wise)\n");
+        printf("7. View Reports\n");
+        printf("8. Back\n");
 
         scanf("%d", &choice);
 
         switch(choice) {
+
             case 1: addCourse(); break;
-            case 2: addBatch(); break;
-            case 3: addDiscount(); break;
-            case 4: showReports(); break;
-            case 5: return;
+            case 2: viewCourses(); break;
+            case 3: addBatch(); break;
+            case 4: viewBatches(); break;
+            case 5: addDiscount(); break;
+            case 6: viewDiscountsBatchWise(); break;
+            case 7: showReports(); break;
+            case 8: return;
+
             default: printf("Invalid Choice\n");
         }
     }
@@ -55,6 +65,12 @@ int main() {
 
     int choice;
 
+    loadStudents();
+    loadCourses();
+    loadBatches();
+    loadDiscounts();
+    loadRegistrations();
+
     while(1) {
         printf("\n===== Smart Admission System =====\n");
         printf("1. Admin Login\n");
@@ -74,6 +90,13 @@ int main() {
                 break;
 
             case 3:
+                saveStudents();
+                saveCourses();
+                saveBatches();
+                saveDiscounts();
+                saveRegistrations();
+
+
                 return 0;
 
             default:

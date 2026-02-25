@@ -32,8 +32,12 @@ typedef struct {
 extern Discount discounts[50];
 extern int discountCount;
 
+void saveDiscounts();
+void loadDiscounts();
+
 void addDiscount();
 void viewDiscounts();
+void viewDiscountsBatchWise();
 int isEligible(Discount d, int studentId, int batchId);
 float applyDiscount(float fee, Discount d);
 char* getCategoryName(int category);

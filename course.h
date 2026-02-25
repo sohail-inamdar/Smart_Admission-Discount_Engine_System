@@ -9,7 +9,12 @@ typedef struct {
 extern Course courses[50];
 extern int courseCount;
 
+void saveCourses();
+void loadCourses();
+
 void addCourse();
-void viewCourses();  
+void viewCourses();
+
+
 
 #endif

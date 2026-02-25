@@ -4,6 +4,28 @@
 Student students[100];
 int studentCount = 0;
 
+void saveStudents() {
+
+    FILE *fp = fopen("students.dat", "wb");
+    if(fp == NULL) return;
+
+    fwrite(&studentCount, sizeof(int), 1, fp);
+    fwrite(students, sizeof(Student), studentCount, fp);
+
+    fclose(fp);
+}
+
+void loadStudents() {
+
+    FILE *fp = fopen("students.dat", "rb");
+    if(fp == NULL) return;
+
+    fread(&studentCount, sizeof(int), 1, fp);
+    fread(students, sizeof(Student), studentCount, fp);
+
+    fclose(fp);
+}
+
 void addStudent() {
     Student s;
     s.id = studentCount + 1;
@@ -20,6 +42,7 @@ void addStudent() {
     students[studentCount++] = s;
     printf("Student Registered Successfully!\n");
     printf("Student Registered ID = %d\n",s.id);
+
 }
 
 void viewStudents() {

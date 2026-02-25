@@ -6,6 +6,28 @@
 Batch batches[100];
 int batchCount = 0;
 
+void saveBatches() {
+
+    FILE *fp = fopen("batches.dat", "wb");
+    if(fp == NULL) return;
+
+    fwrite(&batchCount, sizeof(int), 1, fp);
+    fwrite(batches, sizeof(Batch), batchCount, fp);
+
+    fclose(fp);
+}
+
+void loadBatches() {
+
+    FILE *fp = fopen("batches.dat", "rb");
+    if(fp == NULL) return;
+
+    fread(&batchCount, sizeof(int), 1, fp);
+    fread(batches, sizeof(Batch), batchCount, fp);
+
+    fclose(fp);
+}
+
 void addBatch() {
 
     if(courseCount == 0) {

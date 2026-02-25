@@ -11,4 +11,7 @@ typedef struct {
 void addStudent();
 void viewStudents();
 
+void saveStudents();
+void loadStudents();
+
 #endif

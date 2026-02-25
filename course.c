@@ -4,6 +4,29 @@
 Course courses[50];
 int courseCount = 0;
 
+
+void saveCourses() {
+
+    FILE *fp = fopen("courses.dat", "wb");
+    if(fp == NULL) return;
+
+    fwrite(&courseCount, sizeof(int), 1, fp);
+    fwrite(courses, sizeof(Course), courseCount, fp);
+
+    fclose(fp);
+}
+
+void loadCourses() {
+
+    FILE *fp = fopen("courses.dat", "rb");
+    if(fp == NULL) return;
+
+    fread(&courseCount, sizeof(int), 1, fp);
+    fread(courses, sizeof(Course), courseCount, fp);
+
+    fclose(fp);
+}
+
 void addCourse() {
     Course c;
     c.courseId = courseCount + 1;
@@ -13,6 +36,7 @@ void addCourse() {
 
     courses[courseCount++] = c;
     printf("Course Added Successfully!\n");
+    
 }
 
 void viewCourses() {

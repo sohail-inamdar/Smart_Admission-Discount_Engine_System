@@ -8,6 +8,29 @@ Registration registrations[200];
 int registrationCount = 0;
 int regCounter = 1000;
 
+
+void saveRegistrations() {
+
+    FILE *fp = fopen("registrations.dat", "wb");
+    if(fp == NULL) return;
+
+    fwrite(&registrationCount, sizeof(int), 1, fp);
+    fwrite(registrations, sizeof(Registration), registrationCount, fp);
+
+    fclose(fp);
+}
+
+void loadRegistrations() {
+
+    FILE *fp = fopen("registrations.dat", "rb");
+    if(fp == NULL) return;
+
+    fread(&registrationCount, sizeof(int), 1, fp);
+    fread(registrations, sizeof(Registration), registrationCount, fp);
+
+    fclose(fp);
+}
+
 void registerStudent() {
 
     int studentId;
@@ -38,7 +61,8 @@ void registerStudent() {
         if(isEligible(discounts[i], studentId, batchId)) {
             printf("%d - %s\n",
                    discounts[i].discountId,
-                   discounts[i].discountName);
+                   discounts[i].discountName,
+                   discounts[i].applicableBatchId);
         }
     }
     

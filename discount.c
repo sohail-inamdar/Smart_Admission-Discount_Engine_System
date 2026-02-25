@@ -22,6 +22,71 @@ char* getCategoryName(int category) {
     }
 }
 
+
+void saveDiscounts() {
+
+    FILE *fp = fopen("discounts.dat", "wb");
+    if(fp == NULL) return;
+
+    fwrite(&discountCount, sizeof(int), 1, fp);
+    fwrite(discounts, sizeof(Discount), discountCount, fp);
+
+    fclose(fp);
+}
+
+void loadDiscounts() {
+
+    FILE *fp = fopen("discounts.dat", "rb");
+    if(fp == NULL) return;
+
+    fread(&discountCount, sizeof(int), 1, fp);
+    fread(discounts, sizeof(Discount), discountCount, fp);
+
+    fclose(fp);
+}
+
+
+void viewDiscountsBatchWise() {
+
+    if(batchCount == 0) {
+        printf("No batches available.\n");
+        return;
+    }
+
+    printf("\nAvailable Batches:\n");
+    viewBatches();
+
+    int batchId;
+    printf("Enter Batch ID to view discounts: ");
+    scanf("%d", &batchId);
+
+    int found = 0;
+
+    printf("\nDiscounts for Batch %d:\n", batchId);
+
+    for(int i = 0; i < discountCount; i++) {
+
+        if(discounts[i].applicableBatchId == batchId) {
+
+            printf("ID: %d | %s | %s | ",
+                   discounts[i].discountId,
+                   discounts[i].discountName,
+                   getCategoryName(discounts[i].discountCategory));
+
+            if(discounts[i].discountType == 1)
+                printf("Flat %.2f\n", discounts[i].discountValue);
+            else
+                printf("Percent %.2f%%\n", discounts[i].discountValue);
+
+            found = 1;
+        }
+    }
+
+    if(!found)
+        printf("No discounts available for this batch.\n");
+}
+
+
 void addDiscount() {
 
     Discount d;
@@ -34,6 +99,7 @@ void addDiscount() {
 
     printf("Enter Batch ID for which this discount is applicable: ");
     scanf("%d", &d.applicableBatchId);
+
 
     printf("Enter Discount Name: ");
     scanf(" %[^\n]", d.discountName);
@@ -108,6 +174,12 @@ void viewDiscounts() {
 
 int isEligible(Discount d, int studentId, int batchId) {
 
+
+     // First check if discount is applicable to selected batch
+    if(d.applicableBatchId != batchId)
+        return 0;
+    viewDiscounts();
+
     // REAL SYSTEM DATE
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -118,10 +190,6 @@ int isEligible(Discount d, int studentId, int batchId) {
             tm.tm_mon + 1,
             tm.tm_mday);
 
-    // First check if discount is applicable to selected batch
-    if(d.applicableBatchId != batchId)
-        return 0;
-    viewDiscounts();
 
     // Early Bird
     if(d.discountCategory == 1) {

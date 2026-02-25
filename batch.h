@@ -13,6 +13,9 @@ typedef struct {
 extern Batch batches[100];
 extern int batchCount;
 
+void saveBatches();
+void loadBatches();
+
 void addBatch();
 void viewBatches();
 
