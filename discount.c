@@ -121,8 +121,8 @@ void addDiscount() {
     }
 
     else if(d.discountCategory == 2) {
-        printf("Minimum Completed Courses Required: ");
-        scanf("%d", &d.minCoursesCompleted);
+        printf("Minimum Completed Batches Required: ");
+        scanf("%d", &d.minBatchesCompleted);
     }
 
     else if(d.discountCategory == 3) {
@@ -174,71 +174,77 @@ void viewDiscounts() {
 
 int isEligible(Discount d, int studentId, int batchId) {
 
-    // printf("Checking Discount %d | DiscountBatch=%d | SelectedBatch=%d\n",
-    //    d.discountId,
-    //    d.applicableBatchId,
-    //    batchId);
-
-     // First check if discount is applicable to selected batch
+    // 1️⃣ Batch Match First
     if(d.applicableBatchId != batchId)
         return 0;
-    // viewDiscounts();
 
-    // REAL SYSTEM DATE
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-
-    char today[15];
-    sprintf(today, "%04d%02d%02d",
-            tm.tm_year + 1900,
-            tm.tm_mon + 1,
-            tm.tm_mday);
-
-
-    // Early Bird
+    // 2️⃣ Early Bird
     if(d.discountCategory == 1) {
 
-    // Get today's date
-    time_t t = time(NULL);
-    struct tm tm_today = *localtime(&t);
+        time_t t = time(NULL);
+        struct tm tm_today = *localtime(&t);
 
-    int todayYear  = tm_today.tm_year + 1900;
-    int todayMonth = tm_today.tm_mon + 1;
-    int todayDay   = tm_today.tm_mday;
+        tm_today.tm_hour = 0;
+        tm_today.tm_min = 0;
+        tm_today.tm_sec = 0;
 
-    // Find selected batch
-    char batchDate[15];
+        time_t time_today = mktime(&tm_today);
 
-    for(int i=0; i<batchCount; i++) {
-        if(batches[i].batchId == batchId) {
-            strcpy(batchDate, batches[i].startDate);
-            break;
+        char batchDate[15];
+        int found = 0;
+
+        for(int i=0; i<batchCount; i++) {
+            if(batches[i].batchId == batchId) {
+                strcpy(batchDate, batches[i].startDate);
+                found = 1;
+                break;
+            }
         }
+
+        if(!found)
+            return 0;
+
+        int batchYear, batchMonth, batchDay;
+        sscanf(batchDate, "%2d%2d%4d", &batchDay, &batchMonth, &batchYear);
+
+        struct tm tm_batch = {0};
+        tm_batch.tm_year = batchYear - 1900;
+        tm_batch.tm_mon  = batchMonth - 1;
+        tm_batch.tm_mday = batchDay;
+        tm_batch.tm_hour = 0;
+        tm_batch.tm_min  = 0;
+        tm_batch.tm_sec  = 0;
+
+        time_t time_batch = mktime(&tm_batch);
+
+        double diffSeconds = difftime(time_batch, time_today);
+        int diffDays = diffSeconds / (60 * 60 * 24);
+
+        if(diffDays >= 10)
+            return 1;
+        else
+            return 0;
     }
 
-    // Parse batch date
-    int batchYear, batchMonth, batchDay;
-    sscanf(batchDate, "%4d%2d%2d",
-           &batchYear, &batchMonth, &batchDay);
+    //loyalty Discount
 
-    struct tm tm_batch = {0};
-    tm_batch.tm_year = batchYear - 1900;
-    tm_batch.tm_mon  = batchMonth - 1;
-    tm_batch.tm_mday = batchDay;
+    // Loyalty Discount
+if(d.discountCategory == 2) {
 
-    time_t time_today = mktime(&tm_today);
-    time_t time_batch = mktime(&tm_batch);
+    int completedBatches = 0;
 
-    double diffSeconds = difftime(time_batch, time_today);
-    int diffDays = diffSeconds / (60 * 60 * 24);
+    for(int i = 0; i < registrationCount; i++) {
+        if(registrations[i].studentId == studentId)
+            completedBatches++;
+    }
 
-    if(diffDays >= 10)
+    if(completedBatches >= d.minBatchesCompleted)
         return 1;
     else
         return 0;
 }
 
-    // Individual
+    // 3️⃣ Individual
     if(d.discountCategory == 3) {
         if(studentId == d.studentId)
             return 1;
@@ -246,25 +252,33 @@ int isEligible(Discount d, int studentId, int batchId) {
             return 0;
     }
 
-    // Group Discount (REAL GROUP COUNT)
-    if(d.discountCategory == 5) {
 
-        int groupSize = 0;
+    // Combo Discount
+    if(d.discountCategory == 4) {
+
+        int batch1Done = 0;
+        int batch2Done = 0;
 
         for(int i=0;i<registrationCount;i++) {
-            if(registrations[i].batchId == batchId)
-                groupSize++;
+
+            if(registrations[i].studentId == studentId) {
+
+                if(registrations[i].batchId == d.comboBatch1)
+                    batch1Done = 1;
+
+                if(registrations[i].batchId == d.comboBatch2)
+                    batch2Done = 1;
+            }
         }
 
-        if(groupSize + 1 >= d.minGroupSize)
+        if(batch1Done && batch2Done)
             return 1;
         else
             return 0;
     }
 
-    return 1;
-}
 
+    
 float applyDiscount(float fee, Discount d) {
 
     float finalAmount = fee;

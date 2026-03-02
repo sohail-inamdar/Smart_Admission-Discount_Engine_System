@@ -20,5 +20,7 @@ void loadRegistrations();
 
 void registerStudent();
 void showReports();
+void searchStudentByName();
+void registerGroup(int batchId, Discount d)
 
 #endif

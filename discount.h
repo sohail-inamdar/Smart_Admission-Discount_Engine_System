@@ -21,7 +21,7 @@ typedef struct {
     char endDate[15];
 
     int studentId;
-    int minCoursesCompleted;
+    int minBatchesCompleted;
     int minGroupSize;
 
     int comboBatch1;

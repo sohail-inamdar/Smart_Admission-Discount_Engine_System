@@ -7,7 +7,8 @@ typedef struct {
     float fee;
     int capacity;
     char mode[20];
-    char startDate[15];   // NEW
+    char startDate[15];  
+    char endDate[15];
 } Batch;
 
 extern Batch batches[100];
