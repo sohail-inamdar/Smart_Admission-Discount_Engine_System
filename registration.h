@@ -1,6 +1,8 @@
 #ifndef REGISTRATION_H
 #define REGISTRATION_H
 
+#include "discount.h"
+
 typedef struct {
     int registrationId;
     int studentId;
@@ -21,6 +23,6 @@ void loadRegistrations();
 void registerStudent();
 void showReports();
 void searchStudentByName();
-void registerGroup(int batchId, Discount d)
+void registerGroup(int batchId, Discount d);
 
 #endif

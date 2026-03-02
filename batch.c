@@ -3,6 +3,7 @@
 #include "batch.h"
 #include "course.h"
 #include "registration.h"
+#include "discount.h"
 
 Batch batches[100];
 int batchCount = 0;

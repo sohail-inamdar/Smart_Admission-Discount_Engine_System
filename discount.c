@@ -229,7 +229,7 @@ int isEligible(Discount d, int studentId, int batchId) {
     //loyalty Discount
 
     // Loyalty Discount
-if(d.discountCategory == 2) {
+    if(d.discountCategory == 2) {
 
     int completedBatches = 0;
 
@@ -242,7 +242,7 @@ if(d.discountCategory == 2) {
         return 1;
     else
         return 0;
-}
+    }
 
     // 3️⃣ Individual
     if(d.discountCategory == 3) {
@@ -278,7 +278,7 @@ if(d.discountCategory == 2) {
     }
 
 
-    
+}   
 float applyDiscount(float fee, Discount d) {
 
     float finalAmount = fee;
