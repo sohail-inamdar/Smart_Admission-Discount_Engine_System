@@ -17,14 +17,14 @@ typedef struct {
                           // 4=Combo
                           // 5=Group
 
-    char startDate[15];
+    char startDate[15];  // For EarlyBird
     char endDate[15];
 
     int studentId;
-    int minBatchesCompleted;
+    int minBatchesCompleted; //For loyalty
     int minGroupSize;
 
-    int comboBatch1;
+    int comboBatch1;    //for como offer
     int comboBatch2;
 
 } Discount;
@@ -32,7 +32,7 @@ typedef struct {
 extern Discount discounts[50];
 extern int discountCount;
 
-void saveDiscounts();
+void saveDiscounts();   //for file handling
 void loadDiscounts();
 
 void addDiscount();

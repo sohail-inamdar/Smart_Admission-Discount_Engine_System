@@ -276,8 +276,6 @@ int isEligible(Discount d, int studentId, int batchId) {
         else
             return 0;
     }
-
-
 }   
 float applyDiscount(float fee, Discount d) {
 
